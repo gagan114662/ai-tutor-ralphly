@@ -1,350 +1,249 @@
-# AI Tutor Platform - Ultimate Learning Experience PRD
+# AI Tutor Platform - Production-Ready PRD
 
-## Vision
-Build the **world's most advanced AI-powered learning platform** - combining real-time vision AI, interactive avatar tutors, multi-modal understanding, and adaptive intelligence to create learning experiences that feel like having a genius mentor by your side 24/7, across any subject.
+## Overview
+Build an AI-powered learning platform with vision AI, interactive tutors, and adaptive learning. This PRD is structured for autonomous development with proper testing and sequencing.
 
----
-
-## Phase 1: Vision AI & Real-Time Understanding
-
-### 1.1 Live Camera Learning Assistant
-- [ ] Implement real-time camera feed analysis using Gemini Vision for homework help
-- [ ] Build "point and learn" feature - user points camera at any object/text and AI explains it
-- [ ] Create handwriting recognition that reads and provides feedback on written work in real-time
-- [ ] Add math equation solver from camera - snap photo of problem, get step-by-step solution
-- [ ] Implement diagram/graph understanding - AI interprets hand-drawn charts and provides feedback
-- [ ] Build real-time whiteboard analysis during tutoring sessions
-
-### 1.2 Screen Understanding & Code Vision
-- [ ] Implement screen sharing with AI that understands IDE context, errors, and suggests fixes
-- [ ] Create "pair programming" mode where AI watches code being written and provides real-time guidance
-- [ ] Build design review feature - share Figma/design and get UX/accessibility feedback
-- [ ] Add spreadsheet understanding - AI analyzes Excel/Sheets and teaches formulas
-- [ ] Implement document analysis for research papers, textbooks, and study materials
-
-### 1.3 Physical World Learning
-- [ ] Build AR overlay system for real-world object identification and learning
-- [ ] Create science experiment guide - camera watches lab work and provides safety/procedural guidance
-- [ ] Implement musical instrument tutor using audio + visual analysis (guitar finger positions, piano hands)
-- [ ] Add art critique mode - photograph artwork and receive technique feedback
-- [ ] Build body pose detection for physical skills (yoga poses, dance moves, sports form)
-- [ ] Create cooking assistant that watches and guides through recipes with vision
+## Tech Stack
+- **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS
+- **Backend**: Next.js API Routes, Server Actions
+- **Database**: Supabase (PostgreSQL + Auth + Realtime)
+- **AI**: Google Gemini (Vision + Text), OpenAI (Whisper for audio)
+- **Testing**: Jest, React Testing Library, Playwright (E2E)
+- **State**: Zustand for client state, React Query for server state
 
 ---
 
-## Phase 2: Avatar Tutors & Character AI
+## Phase 0: Project Foundation (MUST COMPLETE FIRST)
 
-### 2.1 Historical Figure Tutors
-- [ ] Build Einstein avatar for physics and mathematics tutoring with authentic persona
-- [ ] Create Shakespeare avatar for literature and creative writing
-- [ ] Implement Marie Curie for chemistry and scientific method
-- [ ] Add Leonardo da Vinci for art, engineering, and renaissance thinking
-- [ ] Build Ada Lovelace for computer science and programming
-- [ ] Create Socrates for philosophy and critical thinking (true Socratic method)
-- [ ] Implement Richard Feynman for "explain it simply" physics teaching style
-- [ ] Add language tutors with native speaker avatars for each language
+### 0.1 Project Setup
+- [ ] Initialize Next.js 14 project with TypeScript, Tailwind CSS, ESLint, Prettier. Create src/app directory structure with layout.tsx and page.tsx. Add .env.example with placeholder values. Include unit test to verify app renders without crashing.
+- [ ] Set up Jest and React Testing Library with proper configuration. Create jest.config.js, jest.setup.js, add test scripts to package.json. Create src/__tests__/setup.test.ts that verifies testing works. All tests must pass.
+- [ ] Set up Playwright for E2E testing. Create playwright.config.ts, e2e/ directory. Create e2e/home.spec.ts that tests homepage loads successfully. Configure for headless Chrome.
+- [ ] Create shared UI component library foundation in src/components/ui/. Build Button, Input, Card, Modal, Spinner, Toast components with TypeScript props. Write unit tests for each component. Export from src/components/ui/index.ts.
+- [ ] Set up Supabase client in src/lib/supabase/. Create client.ts for browser, server.ts for server components, middleware.ts for auth. Add types in src/types/database.ts. Write unit tests mocking Supabase client.
 
-### 2.2 Personalized AI Tutor Avatar
-- [ ] Create customizable tutor avatar that students can personalize (appearance, voice, personality)
-- [ ] Implement tutor "memory" that remembers all past sessions and student preferences
-- [ ] Build emotional bonding through consistent character and callbacks to shared experiences
-- [ ] Add tutor personality modes: strict coach, encouraging friend, patient mentor, challenging rival
-- [ ] Create tutor "growth" where the avatar celebrates student milestones and anniversaries
+### 0.2 Authentication System
+- [ ] Create Supabase auth schema with users table extending auth.users. Add fields: full_name, avatar_url, role (student/teacher/admin), created_at, updated_at. Write migration in supabase/migrations/. Include database types.
+- [ ] Build auth UI components in src/components/auth/. Create LoginForm, SignupForm, ForgotPasswordForm, ResetPasswordForm with proper validation using zod. Write unit tests for form validation logic.
+- [ ] Implement auth pages: src/app/(auth)/login/page.tsx, signup/page.tsx, forgot-password/page.tsx. Use server actions for form submission. Include loading states and error handling. Write E2E test for complete signup and login flow.
+- [ ] Create auth middleware in src/middleware.ts protecting /dashboard/* routes. Redirect unauthenticated users to /login. Write unit tests for middleware logic.
+- [ ] Build user profile page at src/app/dashboard/profile/page.tsx. Allow editing name, avatar upload to Supabase storage. Write unit tests for profile form and E2E test for profile update flow.
 
-### 2.3 Multi-Avatar Collaboration
-- [ ] Build "expert panel" mode where multiple specialist avatars discuss a topic together
-- [ ] Create debate mode where two avatars argue different perspectives for critical thinking
-- [ ] Implement "office hours" simulation with professor avatar and student questions
-- [ ] Add study group simulation with AI classmate avatars for collaborative learning
+### 0.3 Core Layout & Navigation
+- [ ] Create responsive dashboard layout in src/app/dashboard/layout.tsx with sidebar navigation, header with user menu, and main content area. Use Tailwind for styling. Write unit tests for layout components.
+- [ ] Build Sidebar component in src/components/layout/Sidebar.tsx with navigation links: Dashboard, Learn, Practice, Progress, Settings. Highlight active route. Collapsible on mobile. Unit tests for active state logic.
+- [ ] Create Header component in src/components/layout/Header.tsx with search bar, notifications bell, user dropdown menu (profile, settings, logout). Unit tests for dropdown behavior.
+- [ ] Build landing page at src/app/page.tsx with hero section, features grid, testimonials, CTA. Fully responsive. Include SEO metadata. E2E test for page load and navigation to signup.
+- [ ] Implement dark mode support using next-themes. Add theme toggle in Header. Persist preference. Update all components for dark mode. Unit test theme switching logic.
 
 ---
 
-## Phase 3: Advanced Voice & Audio Intelligence
+## Phase 1: Learning Foundation
 
-### 3.1 Voice Cloning for Language Learning
-- [ ] Implement voice cloning that shows students how THEY would sound speaking perfectly
-- [ ] Create accent coaching with real-time feedback and target accent modeling
-- [ ] Build pronunciation trainer with phoneme-level feedback and mouth position guidance
-- [ ] Add "shadow speaking" mode where user speaks along with native speaker with real-time comparison
-- [ ] Implement conversation simulation with realistic AI characters for language immersion
+### 1.1 Subject & Topic System
+- [ ] Create database schema for subjects and topics. Tables: subjects (id, name, slug, description, icon, color), topics (id, subject_id, name, slug, description, order, prerequisites). Write migration and TypeScript types.
+- [ ] Build SubjectCard component displaying subject with icon, name, progress percentage. Create SubjectsGrid layout. Write unit tests for progress calculation and rendering.
+- [ ] Create subjects listing page at src/app/dashboard/learn/page.tsx fetching from Supabase. Server component with suspense. Include loading skeleton. E2E test for subjects display.
+- [ ] Build topic tree component showing hierarchical topics with completion status. Expandable/collapsible. Prerequisites shown as locked. Unit tests for tree logic.
+- [ ] Create subject detail page at src/app/dashboard/learn/[subject]/page.tsx showing all topics in subject. Track user progress. E2E test for topic navigation.
 
-### 3.2 Audio Analysis & Feedback
-- [ ] Build music theory tutor that listens to instrument playing and provides feedback
-- [ ] Create singing coach with pitch, rhythm, and breathing analysis
-- [ ] Implement public speaking trainer analyzing pace, filler words, tone variation
-- [ ] Add podcast/lecture comprehension with auto-generated quizzes from audio
-- [ ] Build audio-based memory techniques (rhythm, songs for memorization)
+### 1.2 Question Engine
+- [ ] Create database schema for questions. Tables: questions (id, topic_id, type, difficulty, content, options, correct_answer, explanation, created_at), user_answers (id, user_id, question_id, answer, is_correct, time_spent, created_at). Write migration and types.
+- [ ] Build question components for different types: MultipleChoice, TrueFalse, FillInBlank, ShortAnswer. Each with proper state management and validation. Unit tests for answer validation.
+- [ ] Create QuestionCard wrapper component handling question display, timer, answer submission, and explanation reveal. Animate transitions. Unit tests for timer and submission logic.
+- [ ] Build practice session page at src/app/dashboard/practice/[topic]/page.tsx. Fetch questions, track progress, show results. Server action for answer submission. E2E test for complete practice session.
+- [ ] Create results summary component showing score, time, incorrect answers with explanations. Option to retry wrong questions. Unit tests for score calculation.
 
-### 3.3 Real-Time Translation & Understanding
-- [ ] Implement live translation during tutoring for non-native speakers
-- [ ] Create code-switching support for bilingual learners
-- [ ] Build technical jargon simplifier that explains complex terms in user's native language
-- [ ] Add cultural context injection for language and history learning
-
----
-
-## Phase 4: Universal Subject Engine
-
-### 4.1 Dynamic Subject Architecture
-- [ ] Create flexible taxonomy supporting any knowledge domain from quantum physics to pottery
-- [ ] Build skill graph system with automatic prerequisite detection using AI
-- [ ] Implement subject-specific learning models (motor skills vs cognitive vs creative)
-- [ ] Add difficulty calibration that works across vastly different domains
-- [ ] Create "learning transfer" detection recognizing when skills from one area help another
-
-### 4.2 AI-Powered Content Generation
-- [ ] Build question generator that creates infinite practice from any topic description
-- [ ] Implement scenario generator for applied learning (real-world problem simulations)
-- [ ] Create explanation generator with multiple difficulty levels (ELI5 to PhD)
-- [ ] Add personalized example generator using student's interests and background
-- [ ] Build counter-example generator to deepen understanding of edge cases
-
-### 4.3 Multi-Modal Question Types
-- [ ] Implement code execution sandboxes for programming (Python, JS, SQL, etc.)
-- [ ] Create interactive simulations for physics, chemistry, biology
-- [ ] Build 3D model manipulation for anatomy, engineering, architecture
-- [ ] Add timeline/map based questions for history and geography
-- [ ] Implement circuit builder for electronics learning
-- [ ] Create molecular structure builder for chemistry
+### 1.3 AI Integration Foundation
+- [ ] Set up Google Gemini API client in src/lib/ai/gemini.ts. Create wrapper functions for text generation and vision. Add rate limiting and error handling. Unit tests with mocked API responses.
+- [ ] Create AI service abstraction in src/lib/ai/service.ts. Interface for different AI providers. Factory pattern for provider selection. Unit tests for abstraction layer.
+- [ ] Build AI explanation generator in src/lib/ai/explanations.ts. Takes question and wrong answer, generates personalized explanation. Cache responses. Unit tests with mocked AI.
+- [ ] Create hint system in src/lib/ai/hints.ts. Progressive hints (3 levels) that guide without revealing answer. Unit tests for hint generation logic.
+- [ ] Build AI question generator in src/lib/ai/questions.ts. Generate questions from topic description. Validate generated questions. Unit tests for question format validation.
 
 ---
 
-## Phase 5: Emotion AI & Adaptive Intelligence
+## Phase 2: Vision AI Features
 
-### 5.1 Real-Time Emotion Detection
-- [ ] Implement facial expression analysis to detect confusion, frustration, boredom, engagement
-- [ ] Build voice tone analysis for emotional state during verbal responses
-- [ ] Create typing pattern analysis (hesitation, backspacing) to detect uncertainty
-- [ ] Add eye tracking integration for attention and comprehension monitoring
-- [ ] Implement physiological signal integration (heart rate from watch) for stress detection
+### 2.1 Camera Integration
+- [ ] Create camera access hook in src/hooks/useCamera.ts. Handle permissions, stream management, device selection (front/back). Cleanup on unmount. Unit tests for permission states.
+- [ ] Build CameraView component in src/components/camera/CameraView.tsx. Live preview, capture button, switch camera, flash toggle. Responsive design. Unit tests for UI states.
+- [ ] Create image capture utility in src/lib/camera/capture.ts. Capture frame from video stream, convert to base64, compress for API. Unit tests for image processing.
+- [ ] Build CameraModal component wrapping CameraView with overlay UI. Instruction text, close button, capture feedback. Unit tests for modal behavior.
+- [ ] Create camera permission flow component. Request permission, show instructions if denied, provide settings link. E2E test for permission flow.
 
-### 5.2 Adaptive Response System
-- [ ] Build automatic difficulty adjustment based on real-time emotional and performance signals
-- [ ] Create encouragement injection system that activates when frustration is detected
-- [ ] Implement "take a break" suggestions based on cognitive fatigue signals
-- [ ] Add celebration moments when breakthrough or mastery is detected
-- [ ] Build anxiety reduction mode with calming voice, slower pace, and simpler problems
+### 2.2 Homework Help Scanner
+- [ ] Build image upload component in src/components/upload/ImageUpload.tsx. Drag-drop, file picker, paste from clipboard, camera capture. Preview before submit. Unit tests for file handling.
+- [ ] Create Gemini Vision integration for homework analysis in src/lib/ai/vision/homework.ts. Send image, get structured response with detected problems and solutions. Unit tests with mocked responses.
+- [ ] Build HomeworkScanner page at src/app/dashboard/homework/page.tsx. Upload/capture image, show analysis loading, display results. E2E test for complete flow.
+- [ ] Create solution display component showing step-by-step breakdown. Expandable steps, LaTeX rendering for math, syntax highlighting for code. Unit tests for rendering.
+- [ ] Build homework history feature. Save scanned homework to database with results. List previous scans. Unit tests for history queries.
 
-### 5.3 Learning Style Adaptation
-- [ ] Implement automatic learning style detection (visual, auditory, reading, kinesthetic)
-- [ ] Create content format switching based on detected preferences
-- [ ] Build explanation style matching to individual comprehension patterns
-- [ ] Add pacing optimization based on individual processing speed
-- [ ] Implement memory technique recommendations based on what works for each user
+### 2.3 Math Equation Solver
+- [ ] Create math OCR integration using Gemini Vision in src/lib/ai/vision/math.ts. Extract equations from images, return LaTeX format. Unit tests with sample images.
+- [ ] Build equation display component using KaTeX. Render LaTeX equations properly. Handle inline and block equations. Unit tests for LaTeX rendering.
+- [ ] Create step-by-step math solver in src/lib/ai/math/solver.ts. Take equation, return solution steps with explanations. Unit tests for solution format.
+- [ ] Build MathSolver page at src/app/dashboard/math/page.tsx. Camera/upload input, equation recognition preview, solve button, step-by-step results. E2E test.
+- [ ] Add graph visualization for equations using recharts. Plot functions, show intercepts, domain/range. Unit tests for data transformation.
 
----
-
-## Phase 6: Immersive & Spatial Learning
-
-### 6.1 AR/VR Learning Experiences
-- [ ] Build WebXR support for immersive 3D learning environments
-- [ ] Create virtual lab for dangerous/expensive experiments (chemistry, physics)
-- [ ] Implement historical scene recreation for immersive history learning
-- [ ] Add virtual field trips to museums, landmarks, natural wonders
-- [ ] Build anatomy exploration in 3D with zoom and cross-section
-- [ ] Create astronomy mode with explorable solar system and universe
-
-### 6.2 Apple Vision Pro / Spatial Computing
-- [ ] Implement visionOS app with spatial tutoring interface
-- [ ] Build 3D model manipulation with hand tracking for learning
-- [ ] Create "tutor in the room" avatar that appears in user's physical space
-- [ ] Add passthrough learning - overlay information on real-world objects
-- [ ] Implement multi-window spatial study environment
-
-### 6.3 Interactive Whiteboard System
-- [ ] Build real-time collaborative whiteboard with AI and student
-- [ ] Create AI that draws diagrams and animations while explaining
-- [ ] Implement handwriting-to-text with mathematical equation rendering
-- [ ] Add gesture recognition for whiteboard commands
-- [ ] Build replay system to review whiteboard explanations
+### 2.4 Document Scanner
+- [ ] Create document detection in src/lib/ai/vision/document.ts. Detect document type (textbook, notes, worksheet). Extract text and structure. Unit tests.
+- [ ] Build document viewer component. Display extracted text with highlighting. Navigate pages/sections. Unit tests for navigation.
+- [ ] Create quiz generator from documents in src/lib/ai/documents/quiz.ts. Analyze document content, generate relevant questions. Unit tests for question quality.
+- [ ] Build DocumentScanner page at src/app/dashboard/documents/page.tsx. Upload document, show extraction progress, display results with generated quiz. E2E test.
+- [ ] Add document library feature. Save scanned documents, organize by subject, search content. Database schema and queries with tests.
 
 ---
 
-## Phase 7: Gamification & Engagement
+## Phase 3: AI Tutor System
 
-### 7.1 Advanced Gamification
-- [ ] Implement XP and leveling system with prestige levels per subject
-- [ ] Create achievement system with rare and legendary badges
-- [ ] Build daily quests and weekly challenges with bonus rewards
-- [ ] Add streak system with streak freezes and recovery mechanics
-- [ ] Implement "boss battles" - challenging assessments that unlock new content
-- [ ] Create skill trees with visual progression paths
+### 3.1 Chat Interface
+- [ ] Create chat message types and database schema. Tables: conversations (id, user_id, subject_id, created_at), messages (id, conversation_id, role, content, metadata, created_at). Migration and types.
+- [ ] Build ChatMessage component displaying user and AI messages. Support markdown, code blocks, LaTeX, images. Typing indicator. Unit tests for message rendering.
+- [ ] Create ChatInput component with textarea, send button, attachment options. Handle multiline, keyboard shortcuts. Unit tests for input handling.
+- [ ] Build ChatContainer managing message list with auto-scroll, load more history, optimistic updates. Unit tests for scroll behavior.
+- [ ] Create streaming response handler in src/lib/ai/streaming.ts. Handle SSE from AI, update UI progressively. Unit tests for stream parsing.
 
-### 7.2 Competitive Features
-- [ ] Build real-time multiplayer quiz battles
-- [ ] Create leaderboards by subject, region, and time period
-- [ ] Implement tournaments with brackets and prizes
-- [ ] Add "race to mastery" challenges between friends
-- [ ] Build team competitions for classroom or study group engagement
+### 3.2 Tutor Personas
+- [ ] Create tutor persona system in src/lib/tutors/personas.ts. Define persona interface: name, avatar, personality, expertise, communication style. TypeScript types.
+- [ ] Build persona definitions: Einstein (physics/math, playful), Curie (chemistry, methodical), Ada (programming, logical), Socrates (philosophy, questioning). Export from src/lib/tutors/index.ts.
+- [ ] Create TutorAvatar component displaying persona image/animation, name badge, expertise tags. Unit tests for rendering variants.
+- [ ] Build TutorSelector component for choosing tutor. Grid of available tutors, preview card with description. Persist selection. Unit tests.
+- [ ] Implement persona-aware prompting in src/lib/ai/tutors/prompt.ts. Inject persona characteristics into AI system prompt. Unit tests for prompt generation.
 
-### 7.3 Rewards & Motivation
-- [ ] Create virtual collectibles and avatar customizations as rewards
-- [ ] Implement "learning coins" economy for unlocking premium content
-- [ ] Build goal-setting system with commitment contracts
-- [ ] Add social proof features showing friends' achievements
-- [ ] Create "comeback" incentives for returning after absence
-
----
-
-## Phase 8: Social & Collaborative Learning
-
-### 8.1 Real-Time Collaboration
-- [ ] Build multiplayer study rooms with shared whiteboard and voice chat
-- [ ] Create peer tutoring marketplace matching helpers with learners
-- [ ] Implement "explain to learn" - students teach AI or peers for deeper understanding
-- [ ] Add collaborative problem-solving where groups tackle challenges together
-- [ ] Build study accountability partners with progress sharing
-
-### 8.2 Community Features
-- [ ] Create subject-specific discussion forums with AI moderation
-- [ ] Build Q&A system where community and AI collaborate on answers
-- [ ] Implement user-generated content with quality voting and curation
-- [ ] Add "learning paths" that users create and share with others
-- [ ] Create mentorship matching between advanced and beginner learners
-
-### 8.3 Teacher & Institution Tools
-- [ ] Build classroom management dashboard for teachers
-- [ ] Create assignment builder with AI-assisted question generation
-- [ ] Implement progress tracking across entire classes with insights
-- [ ] Add parent portal for monitoring child's learning journey
-- [ ] Build LMS integrations (Canvas, Blackboard, Google Classroom)
+### 3.3 Tutoring Session
+- [ ] Create tutoring session state management with Zustand. Track current topic, messages, tutor, progress. Persist across page refreshes. Unit tests for store.
+- [ ] Build TutorChat page at src/app/dashboard/tutor/page.tsx. Tutor selection, topic picker, chat interface. Server actions for message handling. E2E test.
+- [ ] Implement context-aware responses in src/lib/ai/tutors/context.ts. Include conversation history, user level, current topic in prompts. Unit tests.
+- [ ] Create learning path suggestions. AI analyzes conversation, suggests next topics to study. Display as actionable cards. Unit tests for suggestion logic.
+- [ ] Build session summary feature. At end of session, generate summary of topics covered, key learnings, areas to review. Unit tests.
 
 ---
 
-## Phase 9: Analytics & Personalization
+## Phase 4: Progress & Analytics
 
-### 9.1 Deep Learning Analytics
-- [ ] Build comprehensive dashboard showing learning velocity, retention, and patterns
-- [ ] Create skill radar visualization across all subjects
-- [ ] Implement forgetting curve predictions with optimal review timing
-- [ ] Add "time to mastery" estimates for any skill based on current pace
-- [ ] Build comparative analytics (vs past self, vs anonymized peers, vs goals)
+### 4.1 Progress Tracking
+- [ ] Create progress database schema. Tables: user_progress (id, user_id, topic_id, mastery_level, questions_attempted, questions_correct, last_practiced, streak_days). Migration and types.
+- [ ] Build progress calculation service in src/lib/progress/calculate.ts. Mastery algorithm based on accuracy, recency, difficulty. Unit tests for calculation logic.
+- [ ] Create ProgressRing component showing circular progress indicator. Animated fill, percentage display, color coding by level. Unit tests.
+- [ ] Build progress dashboard at src/app/dashboard/progress/page.tsx. Overall stats, subject breakdown, recent activity, streak display. E2E test.
+- [ ] Implement streak tracking system. Calculate consecutive practice days, handle timezone, streak freeze feature. Unit tests for streak logic.
 
-### 9.2 AI-Powered Insights
-- [ ] Implement weakness pattern detection from wrong answer analysis
-- [ ] Create personalized improvement recommendations
-- [ ] Build "aha moment" prediction - identify concepts about to click
-- [ ] Add learning efficiency scoring and optimization suggestions
-- [ ] Create long-term retention prediction with intervention recommendations
+### 4.2 Analytics Dashboard
+- [ ] Create analytics data aggregation in src/lib/analytics/aggregate.ts. Daily/weekly/monthly rollups for practice sessions, accuracy, time spent. Unit tests.
+- [ ] Build charts using recharts: LineChart for progress over time, BarChart for subject comparison, PieChart for time distribution. Unit tests for data transformation.
+- [ ] Create analytics dashboard at src/app/dashboard/analytics/page.tsx. Time range selector, multiple chart views, export data option. E2E test.
+- [ ] Build strength/weakness analyzer in src/lib/analytics/insights.ts. Identify strong topics (high accuracy) and weak topics (low accuracy, avoiding). Unit tests.
+- [ ] Create recommendations engine in src/lib/analytics/recommendations.ts. Suggest what to study based on weakness, forgetting curve, goals. Unit tests.
 
-### 9.3 Intelligent Scheduling
-- [ ] Build smart study scheduler optimizing for retention and cognitive load
-- [ ] Create exam prep mode with countdown and coverage optimization
-- [ ] Implement energy-aware scheduling (harder topics when alert, review when tired)
-- [ ] Add calendar integration with intelligent study session booking
-- [ ] Build "cram mode" for efficient last-minute preparation
-
----
-
-## Phase 10: Platform & Technical Excellence
-
-### 10.1 Performance & Reliability
-- [ ] Implement edge caching for instant question loading globally
-- [ ] Build offline mode with intelligent content pre-caching
-- [ ] Create graceful degradation when AI services are slow
-- [ ] Add session recovery for interrupted learning
-- [ ] Implement optimistic UI for snappy interactions
-
-### 10.2 Mobile Excellence
-- [ ] Build native-feel PWA with app-like experience
-- [ ] Create mobile-optimized voice interactions for hands-free learning
-- [ ] Implement smart notifications for study reminders and streak alerts
-- [ ] Add widget support for quick daily challenges
-- [ ] Build Apple Watch / WearOS companion for micro-learning
-
-### 10.3 Accessibility
-- [ ] Implement full keyboard navigation and screen reader support
-- [ ] Create high-contrast and colorblind-friendly themes
-- [ ] Build dyslexia-friendly font and spacing options
-- [ ] Add closed captions for all audio/video content
-- [ ] Implement sign language avatar for deaf learners
+### 4.3 Achievements & Gamification
+- [ ] Create achievements database schema. Tables: achievements (id, name, description, icon, criteria, points), user_achievements (id, user_id, achievement_id, earned_at). Migration and types.
+- [ ] Build achievement checker in src/lib/achievements/check.ts. Define achievement criteria, check after each action, award new achievements. Unit tests for criteria evaluation.
+- [ ] Create AchievementBadge component displaying badge icon, name, earned status. Locked/unlocked states, animation on earn. Unit tests.
+- [ ] Build achievements page at src/app/dashboard/achievements/page.tsx. Grid of all achievements, filter by earned/locked, progress toward next. E2E test.
+- [ ] Implement XP and leveling system in src/lib/gamification/xp.ts. XP for activities, level thresholds, level-up notifications. Unit tests.
 
 ---
 
-## Phase 11: Content Ecosystem
+## Phase 5: Real-Time Features
 
-### 11.1 Content Ingestion
-- [ ] Build YouTube integration - paste video URL, get AI-generated quiz and notes
-- [ ] Create PDF/textbook uploader with automatic chapter extraction and questions
-- [ ] Implement Wikipedia deep-dive mode with guided exploration
-- [ ] Add podcast learning - upload audio, get transcripts and comprehension checks
-- [ ] Build web page reader that turns any article into a learning module
+### 5.1 WebSocket Infrastructure
+- [ ] Set up Supabase Realtime subscription wrapper in src/lib/realtime/client.ts. Connect, subscribe to channels, handle reconnection. Unit tests with mocked client.
+- [ ] Create presence system in src/lib/realtime/presence.ts. Track online users, typing indicators, active sessions. Unit tests for presence state.
+- [ ] Build notification system with Supabase. Tables: notifications (id, user_id, type, title, body, read, created_at). Real-time subscription for new notifications. Tests.
+- [ ] Create NotificationBell component with unread count badge. Dropdown showing recent notifications, mark as read. Unit tests.
+- [ ] Build toast notification system for real-time events. Achievement earned, streak milestone, friend activity. Unit tests for toast queue.
 
-### 11.2 Content Marketplace
-- [ ] Create marketplace for educators to share/sell question sets
-- [ ] Implement quality certification and review system
-- [ ] Build curriculum alignment tags (Common Core, AP, IB, professional certs)
-- [ ] Add creator analytics and revenue sharing
-- [ ] Create content request system for community-driven expansion
-
-### 11.3 Professional & Certification Content
-- [ ] Build certification prep modules (AWS, Google Cloud, PMP, CFA, etc.)
-- [ ] Create coding interview preparation with real company-style questions
-- [ ] Implement professional skill courses (negotiation, leadership, communication)
-- [ ] Add industry-specific training (medical, legal, finance)
-- [ ] Build continuing education credit tracking
+### 5.2 Collaborative Features
+- [ ] Create study room database schema. Tables: study_rooms (id, name, subject_id, created_by, is_private, created_at), room_members (id, room_id, user_id, role, joined_at). Migration.
+- [ ] Build study room list at src/app/dashboard/rooms/page.tsx. Show public rooms, create room button, join by code. Unit tests for room filtering.
+- [ ] Create study room page at src/app/dashboard/rooms/[id]/page.tsx. Member list, shared content area, chat. Real-time sync. E2E test.
+- [ ] Implement shared whiteboard using canvas. Real-time drawing sync via Supabase Realtime. Basic tools: pen, eraser, colors. Unit tests for draw commands.
+- [ ] Build collaborative quiz feature. Room host starts quiz, all members answer simultaneously, show leaderboard. Unit tests for scoring.
 
 ---
 
-## Technical Infrastructure
+## Phase 6: Mobile & PWA
 
-### AI & ML Infrastructure
-- [ ] Set up Gemini Vision API integration for real-time visual understanding
-- [ ] Implement multi-model orchestration (Gemini for vision, Claude for reasoning, etc.)
-- [ ] Build embedding pipeline for content similarity and recommendations
-- [ ] Create fine-tuning pipeline for domain-specific tutoring
-- [ ] Implement vector database for semantic search across all content
+### 6.1 PWA Setup
+- [ ] Create PWA manifest in public/manifest.json. App name, icons (all sizes), theme colors, display standalone. Configure in next.config.js.
+- [ ] Implement service worker for offline caching using next-pwa. Cache static assets, API responses for viewed content. Unit tests for cache strategies.
+- [ ] Create offline indicator component. Detect connection status, show banner when offline, queue actions for sync. Unit tests.
+- [ ] Build install prompt component for PWA. Detect installable, show custom install button, track installs. Unit tests for install detection.
+- [ ] Add app shortcuts in manifest. Quick access to Practice, Scan Homework, Chat with Tutor from home screen icon.
 
-### Real-Time Systems
-- [ ] Build WebSocket infrastructure for live tutoring sessions
-- [ ] Create WebRTC integration for peer-to-peer video study rooms
-- [ ] Implement real-time collaboration sync (CRDT or OT based)
-- [ ] Add presence system showing who's studying what
-- [ ] Build notification service with intelligent batching
-
-### Data & Analytics
-- [ ] Design flexible schema for unlimited subject/skill expansion
-- [ ] Create analytics data warehouse for learning insights
-- [ ] Implement event streaming for real-time progress tracking
-- [ ] Build ML feature store for personalization models
-- [ ] Add data export for GDPR and user data portability
+### 6.2 Mobile Optimization
+- [ ] Audit and fix all touch targets. Minimum 44x44px tap areas, proper spacing. Update all interactive elements. Visual regression tests.
+- [ ] Implement pull-to-refresh on list pages. Dashboard, progress, achievements. Smooth animation, loading state. Unit tests.
+- [ ] Create bottom navigation for mobile in src/components/layout/BottomNav.tsx. Home, Learn, Scan, Progress, Profile. Show on mobile only. Unit tests.
+- [ ] Optimize images using Next.js Image component. Proper sizing, lazy loading, blur placeholders. Lighthouse audit should pass.
+- [ ] Add haptic feedback for key interactions using navigator.vibrate. Button presses, achievements, errors. Feature detection for unsupported browsers.
 
 ---
 
-## Success Metrics
+## Phase 7: Settings & Admin
 
-### Engagement
-- Daily active users and retention curves
-- Average session duration and sessions per week
-- Feature adoption rates across new capabilities
+### 7.1 User Settings
+- [ ] Create settings page at src/app/dashboard/settings/page.tsx. Tabbed interface: Profile, Preferences, Notifications, Privacy. E2E test.
+- [ ] Build notification preferences form. Toggle email/push for: daily reminders, streak alerts, achievement unlocks, tips. Save to database. Unit tests.
+- [ ] Create learning preferences form. Preferred subjects, difficulty level, daily goal (minutes/questions), preferred tutor. Unit tests for validation.
+- [ ] Implement data export feature. Download all user data as JSON. GDPR compliance. Unit tests for export format.
+- [ ] Add account deletion flow. Confirmation dialog, 30-day grace period, data anonymization. E2E test for deletion flow.
 
-### Learning Outcomes
-- Skill progression velocity by subject
-- Retention rates at 7/30/90 days
-- User-reported goal achievement
-
-### Platform Health
-- API latency p50/p95/p99
-- AI response quality scores
-- Error rates and uptime
+### 7.2 Admin Dashboard (Future)
+- [ ] Create admin role check middleware. Only allow admin users to /admin routes. Unit tests for role validation.
+- [ ] Build admin dashboard at src/app/admin/page.tsx. User count, active sessions, popular subjects, error rates. Charts and stats.
+- [ ] Create user management page at src/app/admin/users/page.tsx. List users, search, filter by role, view details. Pagination. Unit tests.
+- [ ] Build content management for subjects/topics at src/app/admin/content/page.tsx. CRUD operations, reorder topics, bulk import. E2E test.
+- [ ] Create analytics overview at src/app/admin/analytics/page.tsx. Platform-wide metrics, user engagement trends, AI usage stats.
 
 ---
 
-## Implementation Priority
+## Testing Requirements
 
-**Phase 1-2 (Foundation)**: Vision AI + Avatar Tutors - the differentiating features
-**Phase 3-4 (Core)**: Voice intelligence + Universal subjects - platform completeness
-**Phase 5-6 (Advancement)**: Emotion AI + Immersive learning - next-gen experiences
-**Phase 7-9 (Growth)**: Gamification + Social + Analytics - engagement and retention
-**Phase 10-11 (Scale)**: Platform polish + Content ecosystem - market expansion
+### For Every Task
+1. **Unit Tests**: Test individual functions and components in isolation
+2. **Integration Tests**: Test component interactions and API calls
+3. **E2E Tests**: Test critical user flows end-to-end (where specified)
+
+### Test Commands (must pass before task is complete)
+```bash
+npm run test          # Run Jest unit tests
+npm run test:e2e      # Run Playwright E2E tests
+npm run lint          # Run ESLint
+npm run type-check    # Run TypeScript compiler check
+npm run build         # Verify production build
+```
+
+### Coverage Requirements
+- Unit test coverage: minimum 70%
+- All critical paths must have E2E tests
+- No failing tests allowed
+
+---
+
+## Environment Variables Required
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+
+# Google AI
+GOOGLE_AI_API_KEY=
+
+# App
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
 ---
 
 ## Notes for Ralphy
 
-- Prioritize features that showcase vision AI and avatar interactions first
-- Each task should include appropriate tests
-- Follow existing patterns in the codebase
-- Mobile-first thinking for all features
-- Consider API costs and implement smart caching/batching
-- Document all new components and APIs
+1. **Complete Phase 0 first** - All other phases depend on the foundation
+2. **Run tests after each task** - `npm run test && npm run lint && npm run build`
+3. **Follow the order** - Tasks within each section build on each other
+4. **Create mock data** - Use realistic seed data for development
+5. **Handle errors gracefully** - Always show user-friendly error messages
+6. **Mobile-first** - Design for mobile, enhance for desktop
+7. **TypeScript strict** - No `any` types, proper interfaces for all data
